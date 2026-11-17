@@ -17,6 +17,10 @@
   <properties>
     <!-- Generic properties -->
     <java.version>17</java.version>
+    <spring-framework.version>7.0.9</spring-framework.version>
+    <tomcat.version>11.0.29</tomcat.version>
+    <mysql-connector.version>26.10.0</mysql-connector.version>
+    <postgresql.version>42.7.14</postgresql.version>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
     <!-- Important for reproducible builds. Update using e.g. ./mvnw versions:set -DnewVersion=... -->
@@ -92,11 +96,13 @@
     <dependency>
       <groupId>com.mysql</groupId>
       <artifactId>mysql-connector-j</artifactId>
+      <version>${mysql-connector.version}</version>
       <scope>runtime</scope>
     </dependency>
     <dependency>
       <groupId>org.postgresql</groupId>
       <artifactId>postgresql</artifactId>
+      <version>${postgresql.version}</version>
       <scope>runtime</scope>
     </dependency>
     <dependency>
@@ -315,6 +321,28 @@
         <?m2e ignore?>
         <groupId>org.cyclonedx</groupId>
         <artifactId>cyclonedx-maven-plugin</artifactId>
+      </plugin>
+      <plugin>
+        <groupId>org.owasp</groupId>
+        <artifactId>dependency-check-maven</artifactId>
+        <version>13.0.0</version>
+        <configuration>
+          <!-- Nombre de la variable de entorno con la key (no la key) -->
+          <nvdApiKeyEnvironmentVariable>NVD_API_KEY</nvdApiKeyEnvironmentVariable>
+          <!-- Base de datos fuera de ~/.m2 para cachearla por separado -->
+          <dataDirectory>${user.home}/.dependency-check-data</dataDirectory>
+          <formats>
+            <format>HTML</format>
+            <format>SARIF</format>
+          </formats>
+          <!-- Falla con cualquier vulnerabilidad High o Critical -->
+          <failBuildOnCVSS>7</failBuildOnCVSS>
+          <!-- OSS Index exige cuenta en Sonatype; se desactiva -->
+          <ossIndexAnalyzerEnabled>false</ossIndexAnalyzerEnabled>
+          <suppressionFiles>
+            <suppressionFile>${project.basedir}/dependency-check-suppression.xml</suppressionFile>
+          </suppressionFiles>
+        </configuration>
       </plugin>
     </plugins>
   </build>
