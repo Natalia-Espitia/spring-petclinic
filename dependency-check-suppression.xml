@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<suppressions xmlns="https://jeremylong.github.io/DependencyCheck/dependency-suppression.1.4.xsd">
+
+  <!--
+    Motivo: CVE-2022-31691 corresponde a Spring Tools para Eclipse y VS Code,
+    no al artefacto Maven spring-boot-devtools.
+    Evidencia: el reporte identifica el CVE en el CPE spring_tools/cpe falso positivo,
+    mientras el CVE describe Snakeyaml en las extensiones Spring Tools.
+    Revisado por: Natalia-Espitia
+    Fecha de revisión: 2026-11-17
+  -->
+  <suppress until="2027-05-17Z">
+    <notes><![CDATA[
+      Falso positivo: CVE-2022-31691 afecta a Spring Tools para Eclipse y las
+      extensiones de VS Code, no al artefacto Maven spring-boot-devtools.
+    ]]></notes>
+    <packageUrl regex="true">^pkg:maven/org\.springframework\.boot/spring-boot-devtools@.*$</packageUrl>
+    <vulnerabilityName>CVE-2022-31691</vulnerabilityName>
+  </suppress>
+
+</suppressions>
